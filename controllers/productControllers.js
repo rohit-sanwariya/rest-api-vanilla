@@ -33,17 +33,32 @@ async function getProduct(req, res, id) {
 
 //create product POST
 
+
 async function createProducts(req,res){
 try {
+
+
+let body = '';
+
+req.on('data',(chunk)=>{
+  body += chunk.toString();
+})
+
+req.on('end',async ()=>{
+
+  const {title,desc,price}=JSON.parse(body);
   const product ={
-    title:"Real",
-    desc:"descripton",
-    price:100,
+    title ,
+    desc ,
+    price ,
   };
-const newProduct = await ProductModel.create(product);
-res.writeHead(201,{'Content-Type':'application/json'});
-console.log(newProduct);
-res.end(JSON.stringify(newProduct));
+  const newProduct = await ProductModel.create(product);
+  res.writeHead(201,{'Content-Type':'application/json'});
+  console.log(newProduct);
+  res.end(JSON.stringify(newProduct));
+})
+
+
 
 } catch (error) {
   console.log(error);
